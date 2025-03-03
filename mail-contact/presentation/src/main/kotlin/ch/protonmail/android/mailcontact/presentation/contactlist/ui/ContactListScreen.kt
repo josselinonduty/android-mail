@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,10 +41,14 @@ import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
+import androidx.compose.ui.graphics.RectangleShape
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: ContactListViewModel = hiltViewModel()) {
+fun ContactListScreen(
+    listActions: ContactListScreen.Actions,
+    viewModel: ContactListViewModel = hiltViewModel()
+) {
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
@@ -103,10 +108,13 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
         }
     ) {
         Scaffold(
+            drawerGesturesEnabled = true,
+            drawerShape = RectangleShape,
             topBar = {
                 ContactListTopBar(
                     actions = ContactListTopBar.Actions(
                         onBackClick = actions.onBackClick,
+                        onMenuClick = listActions.onMenuClick,
                         onAddClick = {
                             viewModel.submit(ContactListViewAction.OnOpenBottomSheet)
                         },
@@ -114,7 +122,8 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                             viewModel.submit(ContactListViewAction.OnOpenContactSearch)
                         }
                     ),
-                    isAddButtonVisible = state is ContactListState.Loaded.Data
+                    isAddButtonVisible = state is ContactListState.Loaded.Data,
+                    showMenuButton = true
                 )
             },
             content = { paddingValues ->
@@ -211,7 +220,8 @@ object ContactListScreen {
         val onNewGroupClick: () -> Unit,
         val openImportContact: () -> Unit,
         val onSubscriptionUpgradeRequired: (String) -> Unit,
-        val exitWithErrorMessage: (String) -> Unit
+        val exitWithErrorMessage: (String) -> Unit,
+        val onMenuClick: () -> Unit
     ) {
 
         companion object {
@@ -226,7 +236,8 @@ object ContactListScreen {
                 openImportContact = {},
                 onNewGroupClick = {},
                 onSubscriptionUpgradeRequired = {},
-                exitWithErrorMessage = {}
+                exitWithErrorMessage = {},
+                onMenuClick = {}
             )
 
             fun fromContactSearchActions(

@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -40,7 +41,8 @@ import me.proton.core.compose.theme.ProtonTheme
 internal fun ContactListTopBar(
     modifier: Modifier = Modifier,
     actions: ContactListTopBar.Actions,
-    isAddButtonVisible: Boolean
+    isAddButtonVisible: Boolean,
+    showMenuButton: Boolean = false
 ) {
     ProtonTopAppBar(
         modifier = modifier.fillMaxWidth(),
@@ -48,11 +50,23 @@ internal fun ContactListTopBar(
             Text(text = stringResource(id = R.string.contact_list_title))
         },
         navigationIcon = {
-            IconButton(onClick = actions.onBackClick) {
+            IconButton(
+                onClick = if (showMenuButton) actions.onMenuClick else actions.onBackClick
+            ) {
                 Icon(
                     tint = ProtonTheme.colors.iconNorm,
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(id = R.string.presentation_back)
+                    imageVector = if (showMenuButton) {
+                        Icons.Default.Menu
+                    } else {
+                        Icons.AutoMirrored.Filled.ArrowBack
+                    },
+                    contentDescription = stringResource(
+                        id = if (showMenuButton) {
+                            R.string.menu_content_description
+                        } else {
+                            R.string.presentation_back
+                        }
+                    )
                 )
             }
         },
@@ -84,6 +98,7 @@ internal object ContactListTopBar {
 
     data class Actions(
         val onBackClick: () -> Unit,
+        val onMenuClick: () -> Unit,
         val onAddClick: () -> Unit,
         val onSearchClick: () -> Unit
     ) {
@@ -92,6 +107,7 @@ internal object ContactListTopBar {
 
             val Empty = Actions(
                 onBackClick = {},
+                onMenuClick = {},
                 onAddClick = {},
                 onSearchClick = {}
             )

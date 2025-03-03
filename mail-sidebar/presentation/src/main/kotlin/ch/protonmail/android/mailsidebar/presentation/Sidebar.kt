@@ -57,6 +57,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.plan.presentation.compose.component.UpgradeStorageInfo
+import androidx.compose.material.DrawerValue
 
 @Composable
 @Suppress("ComplexMethod")
@@ -64,7 +65,8 @@ fun Sidebar(
     drawerState: DrawerState,
     navigationActions: Sidebar.NavigationActions,
     modifier: Modifier = Modifier,
-    viewModel: SidebarViewModel = hiltViewModel()
+    viewModel: SidebarViewModel = hiltViewModel(),
+    showMailFeatures: Boolean = true
 ) {
     val scope = rememberCoroutineScope()
     val viewState = rememberSidebarState(
@@ -118,8 +120,9 @@ fun Sidebar(
             )
             Sidebar(
                 modifier = modifier,
-                viewState = viewState,
-                actions = actions
+                drawerState = drawerState,
+                navigationActions = navigationActions,
+                showMailFeatures = showMailFeatures
             )
         }
     }
@@ -128,10 +131,21 @@ fun Sidebar(
 @Composable
 fun Sidebar(
     modifier: Modifier = Modifier,
-    viewState: SidebarState,
-    actions: Sidebar.Actions
+    drawerState: DrawerState,
+    navigationActions: Sidebar.NavigationActions,
+    showMailFeatures: Boolean = true
 ) {
     val sidebarColors = requireNotNull(ProtonTheme.colors.sidebarColors)
+    val viewModel: SidebarViewModel = hiltViewModel()
+    val viewState = rememberSidebarState(
+        drawerState = drawerState,
+        appInformation = viewModel.appInformation
+    )
+    val scope = rememberCoroutineScope()
+
+    suspend fun close() {
+        drawerState.close()
+    }
 
     if (viewState.hasPrimaryAccount) {
         AccountPrimaryItem(
@@ -139,10 +153,10 @@ fun Sidebar(
                 .background(sidebarColors.backgroundNorm)
                 .padding(all = ProtonDimens.SmallSpacing)
                 .fillMaxWidth(),
-            onRemove = actions.onRemoveAccount,
-            onSignIn = actions.onSignIn,
-            onSignOut = actions.onSignOut,
-            onSwitch = actions.onSwitchAccount,
+            onRemove = navigationActions.onRemoveAccount,
+            onSignIn = navigationActions.onSignIn,
+            onSignOut = navigationActions.onSignOut,
+            onSwitch = navigationActions.onSwitchAccount,
             viewState = viewState.accountPrimaryState
         )
     }
@@ -153,7 +167,7 @@ fun Sidebar(
         UpgradeStorageInfo(
             modifier = modifier
                 .background(sidebarColors.backgroundNorm),
-            onUpgradeClicked = { actions.onSubscription() },
+            onUpgradeClicked = { navigationActions.onSubscription() },
             withTopDivider = true,
             withBottomDivider = true
         )
@@ -161,20 +175,22 @@ fun Sidebar(
 
     ProtonSidebarLazy(
         modifier = modifier.testTag(SidebarMenuTestTags.Root),
-        drawerState = viewState.drawerState
+        drawerState = drawerState
     ) {
-        sidebarSystemLabelItems(viewState.mailLabels.systems, actions.onLabelAction)
-        item { Divider() }
-        sidebarFolderItems(viewState.mailLabels.folders, actions.onLabelAction)
-        item { Divider() }
-        sidebarLabelItems(viewState.mailLabels.labels, actions.onLabelAction)
-        item { Divider() }
+        if (showMailFeatures) {
+            sidebarSystemLabelItems(viewState.mailLabels.systems, navigationActions.toSidebarActions({ scope.launch { close() } }, {}).onLabelAction)
+            item { Divider() }
+            sidebarFolderItems(viewState.mailLabels.folders, navigationActions.toSidebarActions({ scope.launch { close() } }, {}).onLabelAction)
+            item { Divider() }
+            sidebarLabelItems(viewState.mailLabels.labels, navigationActions.toSidebarActions({ scope.launch { close() } }, {}).onLabelAction)
+            item { Divider() }
+        }
         item { SidebarMoreTitleItem() }
-        item { ProtonSidebarSettingsItem(onClick = actions.onSettings) }
-        item { SidebarSubscriptionItem(viewState.isSubscriptionVisible, onSubscription = actions.onSubscription) }
-        if (viewState.showContacts) item { SidebarContactsItem(onClick = actions.onContacts) }
-        item { ProtonSidebarReportBugItem(onClick = actions.onReportBug) }
-        item { ProtonSidebarSignOutItem(onClick = { actions.onSignOut(null) }) }
+        item { ProtonSidebarSettingsItem(onClick = navigationActions.onSettings) }
+        item { SidebarSubscriptionItem(viewState.isSubscriptionVisible, onSubscription = navigationActions.onSubscription) }
+        if (viewState.showContacts) item { SidebarContactsItem(onClick = navigationActions.onContacts) }
+        item { ProtonSidebarReportBugItem(onClick = navigationActions.onReportBug) }
+        item { ProtonSidebarSignOutItem(onClick = { navigationActions.onSignOut(null) }) }
         item { SidebarAppVersionItem(viewState.appInformation) }
     }
 }
@@ -332,13 +348,17 @@ object Sidebar {
 @Composable
 fun PreviewSidebar() {
     ProtonTheme {
+        val previewState = SidebarState(
+            hasPrimaryAccount = false,
+            isSubscriptionVisible = true,
+            mailLabels = MailLabelsUiModel.PreviewForTesting
+        )
+        val previewDrawerState = DrawerState(initialValue = DrawerValue.Closed)
+        
         Sidebar(
-            viewState = SidebarState(
-                hasPrimaryAccount = false,
-                isSubscriptionVisible = true,
-                mailLabels = MailLabelsUiModel.PreviewForTesting
-            ),
-            actions = Sidebar.Actions.Empty
+            drawerState = previewDrawerState,
+            navigationActions = Sidebar.NavigationActions.Empty,
+            showMailFeatures = false
         )
     }
 }

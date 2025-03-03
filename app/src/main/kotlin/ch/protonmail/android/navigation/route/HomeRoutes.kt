@@ -387,7 +387,8 @@ internal fun NavGraphBuilder.addContacts(
     navController: NavHostController,
     showErrorSnackbar: (message: String) -> Unit,
     showNormalSnackbar: (message: String) -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
+    showFeatureMissingSnackbar: () -> Unit,
+    onMenuClick: () -> Unit
 ) {
     composable(route = Destination.Screen.Contacts.route) {
         ContactListScreen(
@@ -413,6 +414,7 @@ internal fun NavGraphBuilder.addContacts(
                 onBackClick = {
                     navController.navigateBack()
                 },
+                onMenuClick = onMenuClick,
                 onSubscriptionUpgradeRequired = {
                     showNormalSnackbar(it)
                 },

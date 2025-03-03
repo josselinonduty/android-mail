@@ -307,10 +307,11 @@ fun Home(
         drawerContent = {
             Sidebar(
                 drawerState = scaffoldState.drawerState,
-                navigationActions = buildSidebarActions(navController, launcherActions)
+                navigationActions = buildSidebarActions(navController, launcherActions),
+                showMailFeatures = false
             )
         },
-        drawerGesturesEnabled = currentDestinationRoute == Screen.Mailbox.route,
+        drawerGesturesEnabled = currentDestinationRoute == Screen.Contacts.route,
         snackbarHost = {
             DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostSuccess),
@@ -344,7 +345,7 @@ fun Home(
                 addSettings(navController)
                 addAccountSettings(navController, launcherActions, activityActions)
                 addContacts(
-                    navController,
+                    navController = navController,
                     showErrorSnackbar = { message ->
                         scope.launch {
                             snackbarHostErrorState.showSnackbar(
@@ -358,6 +359,11 @@ fun Home(
                     },
                     showFeatureMissingSnackbar = {
                         showFeatureMissingSnackbar()
+                    },
+                    onMenuClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
                     }
                 )
                 addContactDetails(
@@ -507,11 +513,11 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
         onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
         onSwitchAccount = launcherActions.onSwitchAccount,
         onSettings = { navController.navigate(Screen.Settings.route) },
-        onLabelList = { navController.navigate(Screen.LabelList.route) },
-        onFolderList = { navController.navigate(Screen.FolderList.route) },
-        onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
-        onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
         onSubscription = launcherActions.onSubscription,
         onContacts = { navController.navigate(Screen.Contacts.route) },
-        onReportBug = launcherActions.onReportBug
+        onReportBug = launcherActions.onReportBug,
+        onLabelList = {},
+        onFolderList = {},
+        onLabelAdd = {},
+        onFolderAdd = {}
     )
