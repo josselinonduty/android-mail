@@ -1116,7 +1116,6 @@ object MailboxScreen {
         val onAutoDeleteShowUpselling: () -> Unit,
         val onAutoDeleteDialogShow: () -> Unit,
         val onAutoDeleteDialogAction: (Boolean) -> Unit,
-        val onRequestNotificationPermission: () -> Unit
     ) {
 
         companion object {
@@ -1175,7 +1174,6 @@ object MailboxScreen {
                 onAutoDeleteDialogAction = {},
                 onAutoDeleteShowUpselling = {},
                 onAutoDeleteDialogShow = {},
-                onRequestNotificationPermission = {}
             )
         }
     }

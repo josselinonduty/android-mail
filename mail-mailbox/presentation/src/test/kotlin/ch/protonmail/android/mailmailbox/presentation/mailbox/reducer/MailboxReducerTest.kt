@@ -47,7 +47,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
-import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -909,7 +908,5 @@ internal class MailboxReducerTest(
         val errorBarState: Effect<TextUiModel> = Effect.empty(),
         val showRatingBoosterState: Effect<Unit> = Effect.empty(),
         val autoDeleteSettingState: AutoDeleteSettingState = AutoDeleteSettingState.Loading,
-        val notificationPermissionDialogState: NotificationPermissionDialogState =
-            NotificationPermissionDialogState.Hidden
     )
 }

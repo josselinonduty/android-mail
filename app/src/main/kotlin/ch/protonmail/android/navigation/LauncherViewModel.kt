@@ -22,10 +22,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.NewNotificationPermissionFlowEnabled
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
-import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
-import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
 import ch.protonmail.android.navigation.model.LauncherState.PrimaryExist
@@ -62,48 +58,42 @@ import javax.inject.Provider
 class LauncherViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
-    @NewNotificationPermissionFlowEnabled private val isNewNotificationPermissionFlowEnabled: Provider<Boolean>,
-    private val newNotificationPermissionOrchestrator: NewNotificationPermissionOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator,
-    private val notificationsPermissionsOrchestrator: NotificationsPermissionsOrchestrator
 ) : ViewModel() {
 
-    val state: StateFlow<LauncherState> = accountManager.getAccounts().combine(
-        notificationsPermissionsOrchestrator.permissionResult()
-    ) { accounts, permissionResult ->
-        when {
-            accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
-            accounts.any { it.isReady() } -> if (!isNewNotificationPermissionFlowEnabled.get()) {
-                when (permissionResult) {
-                    PermissionResult.CHECKING -> {
-                        notificationsPermissionsOrchestrator.requestPermissionIfRequired()
-                        StepNeeded
-                    }
-
-                    PermissionResult.SHOW_RATIONALE,
-                    PermissionResult.GRANTED,
-                    PermissionResult.DENIED -> PrimaryExist
-                }
-            } else PrimaryExist
-
-            accounts.any { it.isStepNeeded() } -> StepNeeded
-            else -> Processing
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = Processing
-    )
+    val state: StateFlow<LauncherState> = accountManager.getAccounts()
+        .combine(accountManager.getPrimaryUserId()) { accounts, primaryUserId ->
+            when {
+                accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
+                accounts.any { it.isReady() } -> PrimaryExist
+                accounts.any { it.isStepNeeded() } -> StepNeeded
+                else -> Processing
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = Processing
+        )
+    // { accounts ->
+    //     when {
+    //         accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
+    //         accounts.any { it.isReady() } -> PrimaryExist
+    //         accounts.any { it.isStepNeeded() } -> StepNeeded
+    //         else -> Processing
+    //     }
+    // }.stateIn(
+    //     scope = viewModelScope,
+    //     started = SharingStarted.Lazily,
+    //     initialValue = Processing
+    // )
 
     fun register(context: AppCompatActivity) {
         authOrchestrator.register(context)
         plansOrchestrator.register(context)
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
-        notificationsPermissionsOrchestrator.register(context)
-        newNotificationPermissionOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
             viewModelScope.launch {
@@ -127,8 +117,6 @@ class LauncherViewModel @Inject constructor(
         plansOrchestrator.unregister()
         reportOrchestrator.unregister()
         userSettingsOrchestrator.unregister()
-        notificationsPermissionsOrchestrator.unregister()
-        newNotificationPermissionOrchestrator.unregister()
     }
 
     fun submit(action: Action) {
@@ -140,7 +128,7 @@ class LauncherViewModel @Inject constructor(
                 Action.OpenSecurityKeys -> onOpenSecurityKeys()
                 Action.OpenReport -> onOpenReport()
                 Action.OpenSubscription -> onOpenSubscription()
-                Action.RequestNotificationPermission -> onRequestNotificationPermission()
+                Action.RequestNotificationPermission -> {}
                 is Action.SignIn -> onSignIn(action.userId)
                 is Action.Switch -> onSwitch(action.userId)
             }
@@ -177,10 +165,6 @@ class LauncherViewModel @Inject constructor(
         getPrimaryUserIdOrNull()?.let {
             plansOrchestrator.showCurrentPlanWorkflow(it)
         }
-    }
-
-    private fun onRequestNotificationPermission() {
-        newNotificationPermissionOrchestrator.requestPermissionIfRequired()
     }
 
     private suspend fun onSignIn(userId: UserId?) {

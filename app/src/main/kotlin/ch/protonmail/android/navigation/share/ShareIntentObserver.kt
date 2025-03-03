@@ -19,7 +19,6 @@
 package ch.protonmail.android.navigation.share
 
 import android.content.Intent
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +38,7 @@ class ShareIntentObserver @Inject constructor() {
         return intentFlow
             .filterNotNull()
             .filter { intent ->
-                !intent.isNotificationIntent() && intent.action in setOf(
+                intent.action in setOf(
                     Intent.ACTION_SEND,
                     Intent.ACTION_SEND_MULTIPLE,
                     Intent.ACTION_VIEW,
@@ -53,6 +52,4 @@ class ShareIntentObserver @Inject constructor() {
     fun onNewIntent(intent: Intent?) {
         _intentFlow.value = intent
     }
-
-    private fun Intent.isNotificationIntent(): Boolean = data?.host == NotificationsDeepLinkHelper.NotificationHost
 }

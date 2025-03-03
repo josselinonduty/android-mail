@@ -39,7 +39,6 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar.CustomizeToolbarScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
-import ch.protonmail.android.mailsettings.presentation.settings.notifications.ui.PushNotificationsSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.privacy.PrivacySettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
@@ -210,15 +209,6 @@ internal fun NavGraphBuilder.addSwipeActionsSettings(navController: NavHostContr
 internal fun NavGraphBuilder.addThemeSettings(navController: NavHostController) {
     composable(route = Screen.ThemeSettings.route) {
         ThemeSettingsScreen(
-            modifier = Modifier,
-            onBackClick = { navController.navigateBack() }
-        )
-    }
-}
-
-internal fun NavGraphBuilder.addNotificationsSettings(navController: NavHostController) {
-    composable(route = Screen.Notifications.route) {
-        PushNotificationsSettingsScreen(
             modifier = Modifier,
             onBackClick = { navController.navigateBack() }
         )

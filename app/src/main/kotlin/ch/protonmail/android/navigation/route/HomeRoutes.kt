@@ -76,7 +76,6 @@ internal fun NavGraphBuilder.addMailbox(
     showOfflineSnackbar: () -> Unit,
     showNormalSnackbar: (message: String) -> Unit,
     showErrorSnackbar: (String) -> Unit,
-    onRequestNotificationPermission: () -> Unit
 ) {
     composable(route = Destination.Screen.Mailbox.route) {
         MailboxScreen(
@@ -107,7 +106,6 @@ internal fun NavGraphBuilder.addMailbox(
                 onNavigateToStandaloneUpselling = {
                     navController.navigate(Destination.Screen.Upselling.Standalone.route)
                 },
-                onRequestNotificationPermission = onRequestNotificationPermission
             ),
             drawerState = drawerState
         )
@@ -202,9 +200,6 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                 },
                 onThemeClick = {
                     navController.navigate(Destination.Screen.ThemeSettings.route)
-                },
-                onPushNotificationsClick = {
-                    navController.navigate(Destination.Screen.Notifications.route)
                 },
                 onAutoLockClick = {
                     navController.navigate(Destination.Screen.AutoLockSettings.route)

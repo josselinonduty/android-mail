@@ -236,7 +236,6 @@ dependencies {
     implementation(project(":mail-label"))
     implementation(project(":mail-mailbox"))
     implementation(project(":mail-message"))
-    implementation(project(":mail-notifications"))
     implementation(project(":mail-pagination"))
     implementation(project(":mail-settings"))
     implementation(project(":mail-upselling"))

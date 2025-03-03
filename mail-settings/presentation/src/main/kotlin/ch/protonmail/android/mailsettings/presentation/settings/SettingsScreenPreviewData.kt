@@ -42,7 +42,6 @@ object SettingsScreenPreviewData {
     val Actions = MainSettingsScreen.Actions(
         onAccountClick = {},
         onThemeClick = {},
-        onPushNotificationsClick = {},
         onAutoLockClick = {},
         onAlternativeRoutingClick = {},
         onAppLanguageClick = {},

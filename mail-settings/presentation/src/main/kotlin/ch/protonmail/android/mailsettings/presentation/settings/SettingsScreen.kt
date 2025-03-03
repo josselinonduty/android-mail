@@ -127,13 +127,6 @@ fun MainSettingsScreen(
                 Divider()
             }
             item {
-                ProtonSettingsItem(
-                    name = stringResource(id = string.mail_settings_push_notifications),
-                    onClick = actions.onPushNotificationsClick
-                )
-                Divider()
-            }
-            item {
                 AutoLockSettingItem(
                     appSettings = state.appSettings,
                     onAutoLockClick = actions.onAutoLockClick
@@ -336,7 +329,6 @@ object MainSettingsScreen {
     data class Actions(
         val onAccountClick: () -> Unit,
         val onThemeClick: () -> Unit,
-        val onPushNotificationsClick: () -> Unit,
         val onAutoLockClick: () -> Unit,
         val onAlternativeRoutingClick: () -> Unit,
         val onAppLanguageClick: () -> Unit,

@@ -20,7 +20,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -36,154 +35,50 @@
         <package android:name="proton.android.pass" />
     </queries>
 
-    <application
-        android:name=".App"
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="false"
-        android:taskAffinity=""
-        android:theme="@style/ProtonTheme.Mail"
-        tools:replace="android:theme,android:supportsRtl">
-        <profileable
-            android:shell="true"
-            tools:targetApi="29" />
+    <application android:name=".App" android:allowBackup="false" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="false" android:taskAffinity="" android:theme="@style/ProtonTheme.Mail" tools:replace="android:theme,android:supportsRtl">
+        <profileable android:shell="true" tools:targetApi="29" />
 
-        <meta-data
-            android:name="asset_statements"
-            android:resource="@string/asset_statements" />
-        <meta-data
-            android:name="firebase_analytics_collection_deactivated"
-            android:value="true" />
-        <meta-data
-            android:name="firebase_messaging_auto_init_enabled"
-            android:value="false" />
-        <meta-data
-            android:name="google_analytics_adid_collection_enabled"
-            android:value="false" />
+        <meta-data android:name="asset_statements" android:resource="@string/asset_statements" />
+        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
+        <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
 
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.logsfileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/cache_logs_file_paths" />
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.logsfileprovider" android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/cache_logs_file_paths" />
         </provider>
-        <provider
-            android:name="io.sentry.android.core.SentryInitProvider"
-            android:authorities="io.sentry.android.core"
-            tools:node="remove" />
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.AccountStateHandlerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.FeatureFlagInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.SentryInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.EventManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.LoggerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.MainInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.MainInitializer.MainAsyncInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.strictmode.StrictModeInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.ThemeObserverInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+        <provider android:name="io.sentry.android.core.SentryInitProvider" android:authorities="io.sentry.android.core" tools:node="remove" />
+        <provider android:name="androidx.startup.InitializationProvider" android:authorities="${applicationId}.androidx-startup" android:exported="false" tools:node="merge">
+            <meta-data android:name="androidx.work.WorkManagerInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.AccountStateHandlerInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.FeatureFlagInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.SentryInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.EventManagerInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.LoggerInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.MainInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.MainInitializer.MainAsyncInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.strictmode.StrictModeInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.ThemeObserverInitializer" android:value="androidx.startup" tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.WorkManagerInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="me.proton.core.auth.presentation.MissingScopeInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+            <meta-data android:name="me.proton.core.auth.presentation.MissingScopeInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="me.proton.core.humanverification.presentation.HumanVerificationInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+            <meta-data android:name="me.proton.core.humanverification.presentation.HumanVerificationInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="me.proton.core.network.presentation.init.UnAuthSessionFetcherInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+            <meta-data android:name="me.proton.core.network.presentation.init.UnAuthSessionFetcherInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="me.proton.core.plan.presentation.UnredeemedPurchaseInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+            <meta-data android:name="me.proton.core.plan.presentation.UnredeemedPurchaseInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="ch.protonmail.android.initializer.NotificationInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+            <meta-data android:name="me.proton.core.plan.presentation.PurchaseHandlerInitializer" android:value="androidx.startup" tools:node="remove"/>
 
-            <meta-data
-                android:name="ch.protonmail.android.initializer.NotificationHandlersInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+            <meta-data android:name="me.proton.core.paymentiap.presentation.GooglePurchaseHandlerInitializer" android:value="androidx.startup" tools:node="remove"/>
 
-            <meta-data
-                android:name="me.proton.core.plan.presentation.PurchaseHandlerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove"/>
+            <meta-data android:name="me.proton.core.userrecovery.presentation.compose.DeviceRecoveryInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="me.proton.core.paymentiap.presentation.GooglePurchaseHandlerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove"/>
+            <meta-data android:name="ch.protonmail.android.initializer.OutboxInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="me.proton.core.userrecovery.presentation.compose.DeviceRecoveryInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
+            <meta-data android:name="ch.protonmail.android.initializer.AutoLockHandlerInitializer" android:value="androidx.startup" tools:node="remove" />
 
-            <meta-data
-                android:name="ch.protonmail.android.initializer.OutboxInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-
-            <meta-data
-                android:name="ch.protonmail.android.initializer.AutoLockHandlerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-
-            <meta-data
-                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-                android:value="androidx.startup" />
+            <meta-data android:name="androidx.lifecycle.ProcessLifecycleInitializer" android:value="androidx.startup" />
             <!--
              Left Initializers:
              - androidx.profileinstaller.ProfileInstallerInitializer
@@ -191,46 +86,20 @@
 
         </provider>
 
-        <service
-            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
-            android:enabled="false"
-            android:exported="false">
-            <meta-data
-                android:name="autoStoreLocales"
-                android:value="true" />
+        <service android:name="androidx.appcompat.app.AppLocalesMetadataHolderService" android:enabled="false" android:exported="false">
+            <meta-data android:name="autoStoreLocales" android:value="true" />
         </service>
 
-        <service
-            android:name="ch.protonmail.android.mailnotifications.data.remote.fcm.PMFirebaseMessagingService"
-            android:enabled="${isFcmServiceEnabled}"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        <service android:name="androidx.work.impl.foreground.SystemForegroundService" android:foregroundServiceType="dataSync" tools:node="merge" />
 
-        <service
-            android:name="androidx.work.impl.foreground.SystemForegroundService"
-            android:foregroundServiceType="dataSync"
-            tools:node="merge" />
-
-        <receiver android:name=".mailnotifications.data.local.PushNotificationActionsBroadcastReceiver" />
-
-        <receiver
-            android:name=".mailsettings.presentation.settings.autolock.broadcastreceiver.TimeSetBroadcastReceiver"
-            android:exported="false">
+        <receiver android:name=".mailsettings.presentation.settings.autolock.broadcastreceiver.TimeSetBroadcastReceiver" android:exported="false">
 
             <intent-filter>
                 <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="standard"
-            android:theme="@style/ProtonTheme.Splash.Mail"
-            android:windowSoftInputMode="adjustResize">
+        <activity android:name=".MainActivity" android:exported="true" android:launchMode="standard" android:theme="@style/ProtonTheme.Splash.Mail" android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -240,9 +109,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
-                <data
-                    android:host="notification"
-                    android:scheme="proton" />
+                <data android:host="notification" android:scheme="proton" />
             </intent-filter>
 
             <intent-filter>
@@ -271,38 +138,16 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".LockScreenActivity"
-            android:theme="@style/ProtonTheme.Mail" />
+        <activity android:name=".LockScreenActivity" android:theme="@style/ProtonTheme.Mail" />
 
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.AddAccountActivity"
-            android:theme="@style/ProtonTheme.Mail.AddAccount"
-            tools:replace="theme" />
-        <activity
-            android:name="me.proton.core.payment.presentation.ui.BillingActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.payment.presentation.ui.PaymentOptionsActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.payment.presentation.ui.PaymentTokenApprovalActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.plan.presentation.ui.UpgradeActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.crypto.validator.presentation.ui.CryptoValidatorErrorDialogActivity"
-            android:theme="@style/ProtonTheme.Transparent" />
-        <activity
-            android:name="me.proton.core.presentation.ui.alert.ForceUpdateActivity"
-            android:excludeFromRecents="true" />
-        <activity
-            android:name="me.proton.core.report.presentation.ui.BugReportActivity"
-            android:theme="@style/ProtonTheme.Mail"
-            tools:replace="android:theme" />
-        <activity
-            android:name=".PostSubscriptionActivity"
-            android:theme="@style/ProtonTheme.Mail" />
+        <activity android:name="me.proton.core.auth.presentation.ui.AddAccountActivity" android:theme="@style/ProtonTheme.Mail.AddAccount" tools:replace="theme" />
+        <activity android:name="me.proton.core.payment.presentation.ui.BillingActivity" android:theme="@style/ProtonTheme.Mail" />
+        <activity android:name="me.proton.core.payment.presentation.ui.PaymentOptionsActivity" android:theme="@style/ProtonTheme.Mail" />
+        <activity android:name="me.proton.core.payment.presentation.ui.PaymentTokenApprovalActivity" android:theme="@style/ProtonTheme.Mail" />
+        <activity android:name="me.proton.core.plan.presentation.ui.UpgradeActivity" android:theme="@style/ProtonTheme.Mail" />
+        <activity android:name="me.proton.core.crypto.validator.presentation.ui.CryptoValidatorErrorDialogActivity" android:theme="@style/ProtonTheme.Transparent" />
+        <activity android:name="me.proton.core.presentation.ui.alert.ForceUpdateActivity" android:excludeFromRecents="true" />
+        <activity android:name="me.proton.core.report.presentation.ui.BugReportActivity" android:theme="@style/ProtonTheme.Mail" tools:replace="android:theme" />
+        <activity android:name=".PostSubscriptionActivity" android:theme="@style/ProtonTheme.Mail" />
     </application>
 </manifest>

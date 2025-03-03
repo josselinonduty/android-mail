@@ -56,9 +56,6 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailnotifications.domain.model.telemetry.NotificationPermissionTelemetryEventType
-import ch.protonmail.android.mailnotifications.presentation.EnablePushNotificationsDialog
-import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
@@ -80,7 +77,6 @@ import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
 import ch.protonmail.android.navigation.route.addCustomizeToolbar
-import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addDefaultEmailSettings
 import ch.protonmail.android.navigation.route.addDisplayNameSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
@@ -94,7 +90,6 @@ import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addManageMembers
 import ch.protonmail.android.navigation.route.addEntireMessageBody
 import ch.protonmail.android.navigation.route.addMessageDetail
-import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addParentFolderList
 import ch.protonmail.android.navigation.route.addPrivacySettings
 import ch.protonmail.android.navigation.route.addRemoveAccountDialog
@@ -271,32 +266,6 @@ fun Home(
             is MessageSendingStatus.SendMessageError -> showErrorSendingMessageSnackbar()
             is MessageSendingStatus.UploadAttachmentsError -> showErrorUploadAttachmentSnackbar()
             is MessageSendingStatus.None -> {}
-        }
-    }
-
-    when (val notificationPermissionDialogState = state.notificationPermissionDialogState) {
-        is NotificationPermissionDialogState.Hidden -> Unit
-        is NotificationPermissionDialogState.Shown -> {
-            EnablePushNotificationsDialog(
-                state = notificationPermissionDialogState,
-                onEnable = {
-                    launcherActions.onRequestNotificationPermission()
-                    viewModel.closeNotificationPermissionDialog()
-                    viewModel.trackTelemetryEvent(
-                        NotificationPermissionTelemetryEventType.NotificationPermissionDialogEnable(
-                            notificationPermissionDialogState.type
-                        )
-                    )
-                },
-                onDismiss = {
-                    viewModel.closeNotificationPermissionDialog()
-                    viewModel.trackTelemetryEvent(
-                        NotificationPermissionTelemetryEventType.NotificationPermissionDialogDismiss(
-                            notificationPermissionDialogState.type
-                        )
-                    )
-                }
-            )
         }
     }
 
@@ -489,9 +458,7 @@ fun Home(
                 )
                 addSwipeActionsSettings(navController)
                 addThemeSettings(navController)
-                addNotificationsSettings(navController)
                 addExportLogsSettings(navController)
-                addDeepLinkHandler(navController)
                 addUpsellingRoutes(
                     UpsellingScreen.Actions.Empty.copy(
                         onDismiss = { navController.navigateBack() },

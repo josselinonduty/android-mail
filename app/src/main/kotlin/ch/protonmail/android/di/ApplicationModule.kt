@@ -22,8 +22,6 @@ import android.content.Context
 import androidx.work.WorkManager
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
-import ch.protonmail.android.navigation.deeplinks.NotificationsDeepLinkHelperImpl
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.Binds
@@ -84,12 +82,4 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideReviewManager(@ApplicationContext context: Context): ReviewManager = ReviewManagerFactory.create(context)
-
-    @Module
-    @InstallIn(SingletonComponent::class)
-    interface BindsModule {
-
-        @Binds
-        fun bindNotificationsDeepLinkHelper(impl: NotificationsDeepLinkHelperImpl): NotificationsDeepLinkHelper
-    }
 }

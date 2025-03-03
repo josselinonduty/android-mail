@@ -20,11 +20,9 @@ package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
-import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import me.proton.core.network.domain.NetworkStatus
 
 data class HomeState(
-    val notificationPermissionDialogState: NotificationPermissionDialogState,
     val networkStatusEffect: Effect<NetworkStatus>,
     val messageSendingStatusEffect: Effect<MessageSendingStatus>,
     val navigateToEffect: Effect<String>,
@@ -34,7 +32,6 @@ data class HomeState(
     companion object {
 
         val Initial = HomeState(
-            notificationPermissionDialogState = NotificationPermissionDialogState.Hidden,
             networkStatusEffect = Effect.empty(),
             messageSendingStatusEffect = Effect.empty(),
             navigateToEffect = Effect.empty(),

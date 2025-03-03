@@ -81,8 +81,6 @@ class MainInitializer : Initializer<Unit> {
         LoggerInitializer::class.java,
         StrictModeInitializer::class.java,
         ThemeObserverInitializer::class.java,
-        NotificationInitializer::class.java,
-        NotificationHandlersInitializer::class.java,
         OutboxInitializer::class.java,
         AutoLockHandlerInitializer::class.java
     )

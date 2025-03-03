@@ -81,8 +81,6 @@ include(":mail-onboarding:data")
 include(":mail-onboarding:domain")
 include(":mail-onboarding:presentation")
 
-include(":mail-notifications")
-
 include(":mail-settings:dagger")
 include(":mail-settings:data")
 include(":mail-settings:domain")
